@@ -37,6 +37,12 @@ jobs:
         run: |
           echo "$KEYSTORE_BASE64" | base64 --decode > app/release-key.jks
 
+      - name: Verify keystore and show alias
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: |
+          keytool -list -keystore app/release-key.jks -storepass "$KEYSTORE_PASSWORD"
+
       - name: Build signed release APK
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
